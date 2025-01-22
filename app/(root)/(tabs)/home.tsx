@@ -1,13 +1,23 @@
-import { View, Text, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
+import { Link } from 'expo-router'
+import { Text, View } from 'react-native'
 
-export default function HomeScreen() {
+export default function Page() {
+  const { user } = useUser()
+
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <StatusBar barStyle="light-content" backgroundColor="#2563eb" />
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-red-600 font-JakartaBold text-lg font-bold">Hello, NativeWind!</Text>
-      </View>
-    </SafeAreaView>
-  );
+    <View>
+      <SignedIn>
+        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+      </SignedIn>
+      <SignedOut>
+        <Link href="/(auth)/sign-in">
+          <Text>Sign in</Text>
+        </Link>
+        <Link href="/(auth)/sign-up">
+          <Text>Sign up</Text>
+        </Link>
+      </SignedOut>
+    </View>
+  )
 }

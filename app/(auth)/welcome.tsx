@@ -43,7 +43,7 @@ const Home = () => {
                             resizeMode="contain"
                         />
                         <View className="flex flex-row items-center justify-center w-full mt-10">
-                            <Text className="text-black text-3xl mx-10 text-center uppercase font-JakartaBold">
+                            <Text className="text-black text-3xl mx-10 text-center  font-JakartaBold">
                                 {item.title}
                             </Text>
                         </View>
@@ -65,6 +65,6 @@ const Home = () => {
             />
         </SafeAreaView>
     );
-}; 
+};
 
 export default Home;
