@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import "../global.css";
-import { LogBox, useColorScheme } from 'react-native'; import { tokenCache } from '@/lib/auth';
+import { LogBox, useColorScheme } from 'react-native';import { tokenCache } from '@/lib/auth';
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -41,13 +41,15 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return null;
   }
-  return (
+return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(root)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(root)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
       </ClerkLoaded>
     </ClerkProvider>
   );
