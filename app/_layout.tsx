@@ -36,8 +36,7 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
-  const colorScheme = useColorScheme(); // Get current color scheme (light or dark)
-
+  const colorScheme = useColorScheme(); 
   if (!fontsLoaded) {
     return null;
   }
