@@ -3,6 +3,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import * as Location from "expo-location";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -20,7 +21,6 @@ import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
 import { Ride } from "@/types/type";
-import React from "react";
 
 const Home = () => {
   const { user } = useUser();
@@ -71,7 +71,7 @@ const Home = () => {
   }) => {
     setDestinationLocation(location);
 
-  //  router.push("/(root)/find-ride");
+    router.push("/(root)/find-ride");
   };
 
   return (
