@@ -80,18 +80,37 @@ const Map = () => {
       </View>
     );
 
+  // Custom style for muted map (alternative to "mutedStandard")
+  const customStyle = [
+    {
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#212121",
+        },
+      ],
+    },
+    {
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    // You can add more style elements if needed
+  ];
+
   return (
     <MapView
       provider={PROVIDER_DEFAULT}
-      className="w-full h-full rounded-2xl"
-      tintColor="black"
-      mapType="standard"
-      showsPointsOfInterest={false}
+      style={{ width: "100%", height: "100%" }}
+      customMapStyle={customStyle}
       initialRegion={region}
       showsUserLocation={true}
       userInterfaceStyle="light"
     >
-      {markers.map((marker, index) => (
+      {markers.map((marker) => (
         <Marker
           key={marker.id}
           coordinate={{

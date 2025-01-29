@@ -1,24 +1,26 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import "../global.css";
-import { LogBox, useColorScheme } from 'react-native';import { tokenCache } from '@/lib/auth';
+import * as Location from "expo-location";
+import { useEffect, useState } from "react";
+import { Alert, View } from "react-native";
+
+import { LogBox, useColorScheme } from "react-native";
+import { tokenCache } from "@/lib/auth";
+
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
-
 if (!publishableKey) {
-  throw new Error(
-    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env",
-  );
+  throw new Error("Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env");
 }
-LogBox.ignoreLogs(["Clerk:"]);
 
+LogBox.ignoreLogs(["Clerk:"]);
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -30,17 +32,38 @@ export default function RootLayout() {
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
   });
 
+  const colorScheme = useColorScheme();
+
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded]); // ✅ Moved outside the conditional return
 
-  const colorScheme = useColorScheme(); 
+  // ✅ Always call Hooks at the top
+  const requestLocationPermission = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("Permission Status:", status);
+
+    if (status !== "granted") {
+      Alert.alert("Permission Denied", "Location access is required.");
+      return false;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+    console.log("User Location:", location.coords);
+    return true;
+  };
+
+  useEffect(() => {
+    requestLocationPermission();
+  }, []); // ✅ Ensures it's only called once
+
   if (!fontsLoaded) {
-    return null;
+    return <View />; // ✅ Instead of returning `null`
   }
-return (
+
+  return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
         <Stack>

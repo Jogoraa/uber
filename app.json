@@ -9,12 +9,27 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.uber",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to show nearby drivers.",
+        "NSLocationAlwaysUsageDescription": "This app uses your location to show nearby drivers."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "package": "com.example.uber",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDe1xpl-TlIiOkGtkORgo2SSAv0lgEc_cE"
+        }
       }
     },
     "web": {

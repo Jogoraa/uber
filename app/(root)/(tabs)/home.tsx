@@ -11,6 +11,8 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  Alert,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -44,17 +46,29 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
+      console.log("Location permission status:", status);
       if (status !== "granted") {
         setHasPermission(false);
+        console.log("Location permission not granted");
+        Alert.alert(
+          "Location Permission Required",
+          "To use this feature, you must allow location access.",
+          [
+            { text: "Open Settings", onPress: () => Linking.openSettings() },
+          ]
+        );
         return;
       }
 
+      setHasPermission(true);
       let location = await Location.getCurrentPositionAsync({});
+      console.log("Current location:", location);
 
       const address = await Location.reverseGeocodeAsync({
         latitude: location.coords?.latitude!,
         longitude: location.coords?.longitude!,
       });
+      console.log("Reverse geocoded address:", address);
 
       setUserLocation({
         latitude: location.coords?.latitude,
@@ -127,13 +141,18 @@ const Home = () => {
                 Your current location
               </Text>
               <View className="flex flex-row items-center bg-transparent h-[300px]">
-                <Map />
+                {hasPermission ? (
+                  <Map />
+                ) : (
+                  <Text className="text-red-500">Location permission not granted</Text>
+                )}
               </View>
             </>
 
             <Text className="text-xl font-JakartaBold mt-5 mb-3">
               Recent Rides
             </Text>
+
           </>
         }
       />
